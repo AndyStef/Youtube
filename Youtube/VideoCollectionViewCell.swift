@@ -10,6 +10,7 @@ import UIKit
 
 class VideoCollectionViewCell: UICollectionViewCell {
 
+    //I write this just to test
     private let thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .red
