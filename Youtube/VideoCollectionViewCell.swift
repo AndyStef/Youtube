@@ -13,10 +13,9 @@ class VideoCollectionViewCell: UICollectionViewCell {
     //I write this just to test
     private let thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .red
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = #imageLiteral(resourceName: "taylor")
-        
+
         //MARK: - A little trick
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -27,7 +26,6 @@ class VideoCollectionViewCell: UICollectionViewCell {
     private let userProfileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .yellow
         imageView.layer.cornerRadius = 22
         imageView.layer.masksToBounds = true
         imageView.image = #imageLiteral(resourceName: "profile")
@@ -38,18 +36,23 @@ class VideoCollectionViewCell: UICollectionViewCell {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .purple
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Taylor Swift - Blank Space"
 
         return label
     }()
 
-    private let subtitleLabel: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = UIColor.brown
-        label.translatesAutoresizingMaskIntoConstraints = false
+    private let subtitleTextView: UITextView = {
+        let textView = UITextView()
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.text = "TaylorSwiftVEVO - 1,604,684,607 views - 2 years ago"
+        textView.textContainerInset = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 0)
+        textView.textColor = UIColor.lightGray
+        textView.isEditable = false
+        textView.isSelectable = false
+        textView.isScrollEnabled = false
 
-        return label
+        return textView
     }()
 
     private let separatorView: UIView = {
@@ -74,7 +77,7 @@ class VideoCollectionViewCell: UICollectionViewCell {
         addSubview(separatorView)
         addSubview(userProfileImageView)
         addSubview(titleLabel)
-        addSubview(subtitleLabel)
+        addSubview(subtitleTextView)
 
         thumbnailImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
         thumbnailImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
@@ -96,9 +99,9 @@ class VideoCollectionViewCell: UICollectionViewCell {
         titleLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 19).isActive = true
 
-        subtitleLabel.leftAnchor.constraint(equalTo: userProfileImageView.rightAnchor, constant: 8).isActive = true
-        subtitleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
-        subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
-        subtitleLabel.heightAnchor.constraint(equalToConstant: 19).isActive = true
+        subtitleTextView.leftAnchor.constraint(equalTo: userProfileImageView.rightAnchor, constant: 8).isActive = true
+        subtitleTextView.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
+        subtitleTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
+        subtitleTextView.heightAnchor.constraint(equalToConstant: 29).isActive = true
     }
 }
