@@ -15,6 +15,11 @@ class VideoCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.backgroundColor = .red
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = #imageLiteral(resourceName: "taylor")
+        
+        //MARK: - A little trick
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
 
         return imageView
     }()
@@ -23,6 +28,10 @@ class VideoCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .yellow
+        imageView.layer.cornerRadius = 22
+        imageView.layer.masksToBounds = true
+        imageView.image = #imageLiteral(resourceName: "profile")
+        imageView.contentMode = .scaleAspectFill
 
         return imageView
     }()
