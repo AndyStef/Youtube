@@ -35,8 +35,11 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         //What is better here bounds or frame????? brian put frame here
         let width = view.bounds.width
+        let basicHeightForImage = (width - 32) * 9 / 16
+        //MARK: - Basically these magic numbers is not that i want
+        let finalHeight = basicHeightForImage + 8 + 8 + 19 + 29 + 22
 
-        return CGSize(width: width, height: 200)
+        return CGSize(width: width, height: finalHeight)
     }
 
     //MARK: Not sure if this is neccessary

@@ -79,26 +79,32 @@ class VideoCollectionViewCell: UICollectionViewCell {
         addSubview(titleLabel)
         addSubview(subtitleTextView)
 
+        //main image anchors
         thumbnailImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
         thumbnailImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
         thumbnailImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
-        thumbnailImageView.heightAnchor.constraint(equalToConstant: 130).isActive = true
+        //MARK: - this value doesn't have to be hardcodded
+        thumbnailImageView.heightAnchor.constraint(equalToConstant: 230).isActive = true
 
+        //separator anchors
         separatorView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         separatorView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         separatorView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         separatorView.heightAnchor.constraint(equalToConstant: 2).isActive = true
 
+        //user image anchors
         userProfileImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
         userProfileImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
         userProfileImageView.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8).isActive = true
         userProfileImageView.widthAnchor.constraint(equalToConstant: 44).isActive = true
 
+        //title anchors
         titleLabel.leftAnchor.constraint(equalTo: userProfileImageView.rightAnchor, constant: 8).isActive = true
         titleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
         titleLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 19).isActive = true
 
+        //subtitle anchors
         subtitleTextView.leftAnchor.constraint(equalTo: userProfileImageView.rightAnchor, constant: 8).isActive = true
         subtitleTextView.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
         subtitleTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
