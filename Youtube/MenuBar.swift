@@ -23,16 +23,27 @@ class MenuBar: UIView {
     }()
 
     fileprivate let cellId = "cellId"
+    fileprivate let imageNames = ["home", "fire", "collection", "user"]
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cellId")
+        setupCollectionView()
+        selectFirstCell()
+    }
+
+    private func setupCollectionView() {
+        collectionView.register(MenuBarCollectionViewCell.self, forCellWithReuseIdentifier: "cellId")
         addSubview(collectionView)
         collectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         collectionView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         collectionView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+    }
+
+    private func selectFirstCell() {
+        let selectedIndexPath = IndexPath(item: 0, section: 0)
+        collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .top)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -49,8 +60,12 @@ extension MenuBar: UICollectionViewDataSource, UICollectionViewDelegate, UIColle
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-        cell.backgroundColor = .green
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? MenuBarCollectionViewCell else {
+
+            return UICollectionViewCell()
+        }
+
+        cell.imageView.image = UIImage(named: imageNames[indexPath.item])?.withRenderingMode(.alwaysTemplate)
 
         return cell
     }
