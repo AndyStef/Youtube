@@ -14,6 +14,7 @@
 		8F04F8391E56662B0033FEAE /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F04F8381E56662B0033FEAE /* HomeViewController.swift */; };
 		8F04F83B1E566A160033FEAE /* VideoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F04F83A1E566A160033FEAE /* VideoCollectionViewCell.swift */; };
 		8F455E621E64548700C6CDAB /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F455E611E64548700C6CDAB /* UIColor.swift */; };
+		8F455E641E6463BA00C6CDAB /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F455E631E6463BA00C6CDAB /* MenuBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		8F04F8381E56662B0033FEAE /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		8F04F83A1E566A160033FEAE /* VideoCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCollectionViewCell.swift; sourceTree = "<group>"; };
 		8F455E611E64548700C6CDAB /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		8F455E631E6463BA00C6CDAB /* MenuBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				8F04F83A1E566A160033FEAE /* VideoCollectionViewCell.swift */,
+				8F455E631E6463BA00C6CDAB /* MenuBar.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -187,6 +190,7 @@
 				8F455E621E64548700C6CDAB /* UIColor.swift in Sources */,
 				8F04F8231E5660B20033FEAE /* AppDelegate.swift in Sources */,
 				8F04F8391E56662B0033FEAE /* HomeViewController.swift in Sources */,
+				8F455E641E6463BA00C6CDAB /* MenuBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

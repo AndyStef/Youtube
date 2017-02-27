@@ -24,6 +24,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         //Navigation bar customization
         UINavigationBar.appearance().barTintColor = UIColor(colorLiteralRed: 230/255, green: 32/255, blue: 31/255, alpha: 1)
+        //MARK: - Little trick to get rid of line between navBar and some view at the bottom
+        UINavigationBar.appearance().shadowImage = UIImage()
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+        
         let statusBarBackgroundView = UIView()
         statusBarBackgroundView.backgroundColor = UIColor(r: 194, g: 31, b: 31)
         statusBarBackgroundView.translatesAutoresizingMaskIntoConstraints = false 

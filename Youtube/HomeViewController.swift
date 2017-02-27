@@ -14,11 +14,19 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         static let homeCellId = "HomeCellId"
     }
 
+    let menuBar: MenuBar = {
+        let bar = MenuBar()
+        bar.translatesAutoresizingMaskIntoConstraints = false
+
+        return bar
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         customizeNavigationBar()
         setupCollectionView()
+        setupMenuBar()
     }
 
     private func customizeNavigationBar() {
@@ -33,7 +41,17 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
 
     private func setupCollectionView() {
         collectionView?.backgroundColor = .white
+        collectionView?.contentInset = UIEdgeInsets(top: 50.0, left: 0, bottom: 0, right: 0)
+        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 50.0, left: 0, bottom: 0, right: 0)
         collectionView?.register(VideoCollectionViewCell.self, forCellWithReuseIdentifier: CellId.homeCellId)
+    }
+
+    private func setupMenuBar() {
+        view.addSubview(menuBar)
+        menuBar.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+        menuBar.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        menuBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        menuBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
