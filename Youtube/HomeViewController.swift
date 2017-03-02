@@ -21,6 +21,8 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         return bar
     }()
 
+    //Thats just test comment
+    //One more
     override func viewDidLoad() {
         super.viewDidLoad()
 
