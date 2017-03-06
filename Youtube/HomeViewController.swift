@@ -8,7 +8,12 @@
 
 import UIKit
 
-class HomeViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class HomeViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {    
+    private var videos: [Video]? {
+        didSet {
+           // collectionView?.reloadData()
+        }
+    }
 
     private struct CellId {
         static let homeCellId = "HomeCellId"
@@ -21,16 +26,17 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         return bar
     }()
 
-    //Thats just test comment
-    //One more
     override func viewDidLoad() {
         super.viewDidLoad()
 
         customizeNavigationBar()
         setupCollectionView()
         setupMenuBar()
+        setupNavBarButtons()
+        fetchVideos()
     }
 
+    //MARK: - UI stuff
     private func customizeNavigationBar() {
         navigationItem.title = "Home"
         navigationController?.navigationBar.isTranslucent = false
@@ -47,6 +53,26 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 50.0, left: 0, bottom: 0, right: 0)
         collectionView?.register(VideoCollectionViewCell.self, forCellWithReuseIdentifier: CellId.homeCellId)
     }
+    
+    private func setupNavBarButtons() {
+        let glassImage = UIImage(named: "searchIco")?.withRenderingMode(.alwaysTemplate)
+        let searchButton = UIBarButtonItem(image: glassImage, style: .plain, target: self, action: #selector(handleSearchTap))
+        searchButton.tintColor = .white
+        
+        let moreImage = UIImage(named: "more-vert")?.withRenderingMode(.alwaysTemplate)
+        let moreButton = UIBarButtonItem(image: moreImage, style: .plain, target: self, action: #selector(handleMoreTap))
+        moreButton.tintColor = .white
+        
+        navigationItem.rightBarButtonItems = [moreButton, searchButton]
+    }
+    
+    @objc private func handleSearchTap() {
+        //TODO: implement this
+    }
+    
+    @objc private func handleMoreTap() {
+        //TODO: implement this
+    }
 
     private func setupMenuBar() {
         view.addSubview(menuBar)
@@ -55,13 +81,18 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         menuBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         menuBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
     }
-
+    
+    //MARK: - Collection View stuff
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return videos?.count ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellId.homeCellId, for: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellId.homeCellId, for: indexPath) as? VideoCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        cell.video = videos?[indexPath.item]
 
         return cell
     }
@@ -71,6 +102,7 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         let width = view.bounds.width
         let basicHeightForImage = (width - 32) * 9 / 16
         //MARK: - Basically these magic numbers is not that i want
+        //FIXME: - fix too long label name(video 4)
         let finalHeight = basicHeightForImage + 8 + 8 + 19 + 29 + 22
 
         return CGSize(width: width, height: finalHeight)
@@ -79,5 +111,54 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     //MARK: Not sure if this is neccessary
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+    
+    //MARK: - networking - it should definitely be in separate class
+    private func fetchVideos() {
+        let urlString = "https://s3-us-west-2.amazonaws.com/youtubeassets/home.json"
+        guard let url = URL(string: urlString) else { return }
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("Error:", error.localizedDescription)
+            }
+            
+            guard let data = data else {
+                print("Error: cannot get data")
+                return
+            }
+           
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+                
+                self.videos = [Video]()
+                
+                for dictionary in json as! [[String: Any]] {
+                    let video = Video()
+                    video.title = dictionary["title"] as? String
+                    video.thumbnailImageName = dictionary["thumbnail_image_name"] as? String
+                    
+                    let channelDictionary = dictionary["channel"] as? [String: Any]
+                    let channel = Channel()
+                    channel.name = channelDictionary?["name"] as? String
+                    channel.profileImageName = channelDictionary?["profile_image_name"] as? String
+                    
+                    video.channel = channel
+                    self.videos?.append(video)
+                }
+                
+                //MARK: - what is better this or to do in didSet
+                DispatchQueue.main.async {
+                    self.collectionView?.reloadData()
+                }
+                
+            } catch let jsonError {
+                print("Error parsing json", jsonError.localizedDescription)
+                return
+            }
+            
+        }
+        
+        dataTask.resume()
     }
 }

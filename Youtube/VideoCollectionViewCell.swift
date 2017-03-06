@@ -9,12 +9,40 @@
 import UIKit
 
 class VideoCollectionViewCell: BaseCell {
+    //Data model
+    var video: Video? {
+        didSet {
+            titleLabel.text = video?.title
+            
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .decimal
+            let subtitleText = "\(video?.channel?.name ?? "") - \(numberFormatter.string(from: video?.numberOfViews ?? 0) ?? "") - 2 years ago"
+            subtitleTextView.text = subtitleText
+            
+            //MARK: - those two definitely need some placeholder
+            setupThumbnailImage()
+            setupProfileImage()
+            
+            //estimate height of title label 
+            if let title = video?.title {
+                let size = CGSize(width: frame.width - 16 - 44 - 8 - 16, height: 1000)
+                let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+                let estimatedRect = NSString(string: title).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14)], context: nil)
+                
+                //FIXME: - needs to be 2 lines if text is big
+                if estimatedRect.height > 20 {
+                    titleLabelHeight = 44
+                } else {
+                    titleLabelHeight = 19
+                }
+            }
+        }
+    }
 
     //I write this just to test
-    private let thumbnailImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let thumbnailImageView: CustomImageView = {
+        let imageView = CustomImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = #imageLiteral(resourceName: "taylor")
 
         //MARK: - A little trick
         imageView.contentMode = .scaleAspectFill
@@ -23,12 +51,11 @@ class VideoCollectionViewCell: BaseCell {
         return imageView
     }()
 
-    private let userProfileImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let userProfileImageView: CustomImageView = {
+        let imageView = CustomImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 22
         imageView.layer.masksToBounds = true
-        imageView.image = #imageLiteral(resourceName: "profile")
         imageView.contentMode = .scaleAspectFill
 
         return imageView
@@ -38,9 +65,12 @@ class VideoCollectionViewCell: BaseCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Taylor Swift - Blank Space"
-
+        label.numberOfLines = 2
+        
         return label
     }()
+    
+    private var titleLabelHeight: CGFloat?
 
     private let subtitleTextView: UITextView = {
         let textView = UITextView()
@@ -93,12 +123,25 @@ class VideoCollectionViewCell: BaseCell {
         titleLabel.leftAnchor.constraint(equalTo: userProfileImageView.rightAnchor, constant: 8).isActive = true
         titleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
         titleLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8).isActive = true
-        titleLabel.heightAnchor.constraint(equalToConstant: 19).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: titleLabelHeight ?? 19).isActive = true
 
+        //FIXME: - fix too long label name(video 4)
         //subtitle anchors
         subtitleTextView.leftAnchor.constraint(equalTo: userProfileImageView.rightAnchor, constant: 8).isActive = true
         subtitleTextView.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
         subtitleTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
         subtitleTextView.heightAnchor.constraint(equalToConstant: 29).isActive = true
+    }
+    
+    private func setupThumbnailImage() {
+        if let imageUrl = video?.thumbnailImageName {
+            thumbnailImageView.loadImageUsing(urlString: imageUrl)
+        }
+    }
+    
+    private func setupProfileImage() {
+        if let imageUrl = video?.channel?.profileImageName {
+            userProfileImageView.loadImageUsing(urlString: imageUrl)
+        }
     }
 }
