@@ -18,7 +18,11 @@ class SettingsLauncher: NSObject {
         return collectionView
     }()
     
-    let collectionViewHeight: CGFloat = 200.0
+    let collectionViewHeight: CGFloat = 300.0
+    let settingsImages = ["settings", "lock", "feedback", "help", "account", "close"]
+    let settingsNames = ["Settings", "Terms & privacy policy", "Send Feedback", "Help", "Switch Account", "Cancel"]
+    //MARK: - storyboard
+    let cellId = "cellId"
     
     let blackView = UIView()
     
@@ -51,5 +55,35 @@ class SettingsLauncher: NSObject {
     
     override init() {
         super.init()
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(SettingsCell.self, forCellWithReuseIdentifier: cellId)
+    }
+}
+
+extension SettingsLauncher: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 6
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? SettingsCell else {
+            return UICollectionViewCell()
+        }
+        
+        //MARK: - that should be done in another way
+        cell.icon.image = UIImage(named: settingsImages[indexPath.item])?.withRenderingMode(.alwaysTemplate)
+        cell.nameLabel.text = settingsNames[indexPath.item]
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 50)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
     }
 }
