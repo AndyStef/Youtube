@@ -11,7 +11,7 @@ import UIKit
 class HomeViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {    
     private var videos: [Video]? {
         didSet {
-            collectionView?.reloadData()
+           // collectionView?.reloadData()
         }
     }
 
@@ -145,6 +145,11 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
                     
                     video.channel = channel
                     self.videos?.append(video)
+                }
+                
+                //MARK: - what is better this or to do in didSet
+                DispatchQueue.main.async {
+                    self.collectionView?.reloadData()
                 }
                 
             } catch let jsonError {

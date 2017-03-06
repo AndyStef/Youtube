@@ -9,7 +9,6 @@
 import UIKit
 
 class VideoCollectionViewCell: BaseCell {
-    
     //Data model
     var video: Video? {
         didSet {
@@ -41,8 +40,8 @@ class VideoCollectionViewCell: BaseCell {
     }
 
     //I write this just to test
-    private let thumbnailImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let thumbnailImageView: CustomImageView = {
+        let imageView = CustomImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
         //MARK: - A little trick
@@ -52,8 +51,8 @@ class VideoCollectionViewCell: BaseCell {
         return imageView
     }()
 
-    private let userProfileImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let userProfileImageView: CustomImageView = {
+        let imageView = CustomImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 22
         imageView.layer.masksToBounds = true
