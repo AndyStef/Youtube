@@ -8,26 +8,12 @@
 
 import UIKit
 
-class HomeViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    private var videos: [Video] = {
-        let kanyeChannel = Channel()
-        kanyeChannel.name = "KanyeIsTheBestChannel"
-        kanyeChannel.profileImageName = ""
-        
-        let blankSpaceVideo = Video()
-        blankSpaceVideo.title = "Taylor Swift - Blank Space"
-        blankSpaceVideo.thumbnailImageName = "taylor"
-        blankSpaceVideo.channel = kanyeChannel
-        blankSpaceVideo.numberOfViews = 28374194
-        
-        let badBloodVideo = Video()
-        badBloodVideo.title = "Taylor Swift - Bad Blood featuring Kendrick Lamargdsgdsgsdgsdgsdgsdgsdgsd"
-        badBloodVideo.thumbnailImageName = "BadBloodImage"
-        badBloodVideo.channel = kanyeChannel
-        badBloodVideo.numberOfViews = 124125662125
-        
-        return [blankSpaceVideo, badBloodVideo]
-    }()
+class HomeViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {    
+    private var videos: [Video]? {
+        didSet {
+            collectionView?.reloadData()
+        }
+    }
 
     private struct CellId {
         static let homeCellId = "HomeCellId"
@@ -47,8 +33,10 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         setupCollectionView()
         setupMenuBar()
         setupNavBarButtons()
+        fetchVideos()
     }
 
+    //MARK: - UI stuff
     private func customizeNavigationBar() {
         navigationItem.title = "Home"
         navigationController?.navigationBar.isTranslucent = false
@@ -93,9 +81,10 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         menuBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         menuBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
     }
-
+    
+    //MARK: - Collection View stuff
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return videos.count
+        return videos?.count ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -103,7 +92,7 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
             return UICollectionViewCell()
         }
         
-        cell.video = videos[indexPath.item]
+        cell.video = videos?[indexPath.item]
 
         return cell
     }
@@ -122,5 +111,49 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     //MARK: Not sure if this is neccessary
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+    
+    //MARK: - networking - it should definitely be in separate class
+    private func fetchVideos() {
+        let urlString = "https://s3-us-west-2.amazonaws.com/youtubeassets/home.json"
+        guard let url = URL(string: urlString) else { return }
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("Error:", error.localizedDescription)
+            }
+            
+            guard let data = data else {
+                print("Error: cannot get data")
+                return
+            }
+           
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+                
+                self.videos = [Video]()
+                
+                for dictionary in json as! [[String: Any]] {
+                    let video = Video()
+                    video.title = dictionary["title"] as? String
+                    video.thumbnailImageName = dictionary["thumbnail_image_name"] as? String
+                    
+                    let channelDictionary = dictionary["channel"] as? [String: Any]
+                    let channel = Channel()
+                    channel.name = channelDictionary?["name"] as? String
+                    channel.profileImageName = channelDictionary?["profile_image_name"] as? String
+                    
+                    video.channel = channel
+                    self.videos?.append(video)
+                }
+                
+            } catch let jsonError {
+                print("Error parsing json", jsonError.localizedDescription)
+                return
+            }
+            
+        }
+        
+        dataTask.resume()
     }
 }

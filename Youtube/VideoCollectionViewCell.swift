@@ -19,9 +19,10 @@ class VideoCollectionViewCell: BaseCell {
             numberFormatter.numberStyle = .decimal
             let subtitleText = "\(video?.channel?.name ?? "") - \(numberFormatter.string(from: video?.numberOfViews ?? 0) ?? "") - 2 years ago"
             subtitleTextView.text = subtitleText
+            
             //MARK: - those two definitely need some placeholder
-            thumbnailImageView.image = UIImage(named: video?.thumbnailImageName ?? "")
-            userProfileImageView.image = UIImage(named: video?.channel?.profileImageName ?? "")
+            setupThumbnailImage()
+            setupProfileImage()
             
             //estimate height of title label 
             if let title = video?.title {
@@ -29,7 +30,7 @@ class VideoCollectionViewCell: BaseCell {
                 let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
                 let estimatedRect = NSString(string: title).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14)], context: nil)
                 
-                print(estimatedRect.height)
+                //FIXME: - needs to be 2 lines if text is big
                 if estimatedRect.height > 20 {
                     titleLabelHeight = 44
                 } else {
@@ -43,7 +44,6 @@ class VideoCollectionViewCell: BaseCell {
     private let thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = #imageLiteral(resourceName: "taylor")
 
         //MARK: - A little trick
         imageView.contentMode = .scaleAspectFill
@@ -57,7 +57,6 @@ class VideoCollectionViewCell: BaseCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 22
         imageView.layer.masksToBounds = true
-        imageView.image = #imageLiteral(resourceName: "profile")
         imageView.contentMode = .scaleAspectFill
 
         return imageView
@@ -133,5 +132,17 @@ class VideoCollectionViewCell: BaseCell {
         subtitleTextView.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
         subtitleTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
         subtitleTextView.heightAnchor.constraint(equalToConstant: 29).isActive = true
+    }
+    
+    private func setupThumbnailImage() {
+        if let imageUrl = video?.thumbnailImageName {
+            thumbnailImageView.loadImageUsing(urlString: imageUrl)
+        }
+    }
+    
+    private func setupProfileImage() {
+        if let imageUrl = video?.channel?.profileImageName {
+            userProfileImageView.loadImageUsing(urlString: imageUrl)
+        }
     }
 }
