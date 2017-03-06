@@ -10,6 +10,16 @@ import UIKit
 
 class SettingsLauncher: NSObject {
     
+    let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .white
+        
+        return collectionView
+    }()
+    
+    let collectionViewHeight: CGFloat = 200.0
+    
     let blackView = UIView()
     
     func showSettings() {
@@ -20,9 +30,14 @@ class SettingsLauncher: NSObject {
             blackView.frame = window.bounds
             blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleDismiss)))
             window.addSubview(blackView)
+            window.addSubview(collectionView)
+           
+            let y = window.frame.height// - collectionViewHeight
+            collectionView.frame = CGRect(x: 0, y: y, width: window.frame.width, height: collectionViewHeight)
             
             UIView.animate(withDuration: 1.0, animations: {
                 self.blackView.alpha = 0.5
+                self.collectionView.frame.origin.y -= self.collectionViewHeight
             })
         }
     }
@@ -30,6 +45,7 @@ class SettingsLauncher: NSObject {
     func handleDismiss() {
         UIView.animate(withDuration: 1.0) {
             self.blackView.alpha = 0.0
+            self.collectionView.frame.origin.y += self.collectionViewHeight
         }
     }
     
