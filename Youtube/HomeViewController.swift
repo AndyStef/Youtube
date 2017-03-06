@@ -9,7 +9,6 @@
 import UIKit
 
 class HomeViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    
     private var videos: [Video] = {
         let kanyeChannel = Channel()
         kanyeChannel.name = "KanyeIsTheBestChannel"
@@ -80,11 +79,11 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     @objc private func handleSearchTap() {
-        
+        //TODO: implement this
     }
     
     @objc private func handleMoreTap() {
-        
+        //TODO: implement this
     }
 
     private func setupMenuBar() {
@@ -114,6 +113,7 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         let width = view.bounds.width
         let basicHeightForImage = (width - 32) * 9 / 16
         //MARK: - Basically these magic numbers is not that i want
+        //FIXME: - fix too long label name(video 4)
         let finalHeight = basicHeightForImage + 8 + 8 + 19 + 29 + 22
 
         return CGSize(width: width, height: finalHeight)

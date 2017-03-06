@@ -127,6 +127,7 @@ class VideoCollectionViewCell: BaseCell {
         titleLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: titleLabelHeight ?? 19).isActive = true
 
+        //FIXME: - fix too long label name(video 4)
         //subtitle anchors
         subtitleTextView.leftAnchor.constraint(equalTo: userProfileImageView.rightAnchor, constant: 8).isActive = true
         subtitleTextView.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
