@@ -25,7 +25,7 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
 
         return bar
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -70,10 +70,12 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         //TODO: implement this
     }
     
+    let settingsLauncher = SettingsLauncher()
+    
     @objc private func handleMoreTap() {
-        //TODO: implement this
+        settingsLauncher.showSettings()
     }
-
+    
     private func setupMenuBar() {
         view.addSubview(menuBar)
         menuBar.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
@@ -91,7 +93,7 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellId.homeCellId, for: indexPath) as? VideoCollectionViewCell else {
             return UICollectionViewCell()
         }
-        
+
         cell.video = videos?[indexPath.item]
 
         return cell
