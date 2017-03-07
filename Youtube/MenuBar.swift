@@ -57,7 +57,7 @@ class MenuBar: UIView {
         horizontalBarLeftAnchor = horizontalBarView.leftAnchor.constraint(equalTo: leftAnchor)
         horizontalBarLeftAnchor?.isActive = true
         horizontalBarView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        horizontalBarView.heightAnchor.constraint(equalToConstant: 8.0).isActive = true
+        horizontalBarView.heightAnchor.constraint(equalToConstant: 6.5).isActive = true
         horizontalBarView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/4).isActive = true
     }
     
