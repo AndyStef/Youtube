@@ -35,6 +35,9 @@ class SettingsLauncher: NSObject {
     
     let blackView = UIView()
     
+    //MARK: - this should be weak and done with delegete protocol
+    var homeController: HomeViewController?
+    
     func showSettings() {
         //TODO: implement this
         if let window = UIApplication.shared.keyWindow {
@@ -88,7 +91,19 @@ extension SettingsLauncher: UICollectionViewDelegate, UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("luul")
+        //TODO: - implement this
+        UIView.animate(withDuration: 0.6, animations: { 
+            self.blackView.alpha = 0.0
+            self.collectionView.frame.origin.y += self.collectionViewHeight
+        }) { (completed) in
+            let setting = self.settings[indexPath.item]
+            
+            if setting.name == "Cancel" {
+                return
+            }
+            
+            self.homeController?.showControllerFor(setting: setting)
+        }
     }
     
     //MARK: - Sizing

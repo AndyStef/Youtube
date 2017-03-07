@@ -70,10 +70,26 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         //TODO: implement this
     }
     
-    let settingsLauncher = SettingsLauncher()
+    //MARK: - maybe there is no need for delegate
+    lazy var settingsLauncher: SettingsLauncher = {
+        let launcher = SettingsLauncher()
+        launcher.homeController = self
+        
+        return launcher
+    }()
     
     @objc private func handleMoreTap() {
         settingsLauncher.showSettings()
+    }
+    
+    func showControllerFor(setting: Setting) {
+        let dummySettingsViewController = UIViewController()
+        dummySettingsViewController.navigationItem.title = setting.name
+        dummySettingsViewController.view.backgroundColor = .white
+        navigationController?.navigationBar.tintColor = .white
+        //MARK: - that's the way to set color of navigation title
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        navigationController?.pushViewController(dummySettingsViewController, animated: true)
     }
     
     private func setupMenuBar() {
@@ -105,6 +121,7 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         let basicHeightForImage = (width - 32) * 9 / 16
         //MARK: - Basically these magic numbers is not that i want
         //FIXME: - fix too long label name(video 4)
+        //FIXME: - it's totally broken on other iPhones
         let finalHeight = basicHeightForImage + 8 + 8 + 19 + 29 + 22
 
         return CGSize(width: width, height: finalHeight)
@@ -158,7 +175,6 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
                 print("Error parsing json", jsonError.localizedDescription)
                 return
             }
-            
         }
         
         dataTask.resume()
