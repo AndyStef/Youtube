@@ -38,10 +38,9 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
 
     //MARK: - UI stuff
     private func customizeNavigationBar() {
-        navigationItem.title = "Home"
         navigationController?.navigationBar.isTranslucent = false
         let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
-        titleLabel.text = "Home"
+        titleLabel.text = "   Home"
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont.systemFont(ofSize: 20)
         navigationItem.titleView = titleLabel
@@ -93,9 +92,22 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     private func setupMenuBar() {
+        navigationController?.hidesBarsOnSwipe = true
+        
+        //MARK: - Actual trick to fill gap between status bar and menu bar
+        let redView = UIView()
+        redView.translatesAutoresizingMaskIntoConstraints = false
+        redView.backgroundColor = UIColor(colorLiteralRed: 230/255, green: 32/255, blue: 31/255, alpha: 1)
+        view.addSubview(redView)
+        redView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        redView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        redView.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+        redView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        
         view.addSubview(menuBar)
         menuBar.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
-        menuBar.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        //MARK: - we need topLayoutGuide to stick to top of screen
+        menuBar.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
         menuBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         menuBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
     }
