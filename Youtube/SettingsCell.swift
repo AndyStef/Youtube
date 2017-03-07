@@ -17,6 +17,13 @@ class SettingsCell: BaseCell {
             icon.tintColor = isHighlighted ? .white : .black
         }
     }
+    
+    var setting: Setting? {
+        didSet {
+            nameLabel.text = setting?.name
+            icon.image = UIImage(named: setting?.imageName ?? "")
+        }
+    }
   
     let nameLabel: UILabel = {
         let label = UILabel()

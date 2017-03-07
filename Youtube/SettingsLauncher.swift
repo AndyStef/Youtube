@@ -19,8 +19,17 @@ class SettingsLauncher: NSObject {
     }()
     
     let collectionViewHeight: CGFloat = 300.0
-    let settingsImages = ["settings", "lock", "feedback", "help", "account", "close"]
-    let settingsNames = ["Settings", "Terms & privacy policy", "Send Feedback", "Help", "Switch Account", "Cancel"]
+    let settings: [Setting] = {
+        let settings = [Setting(name: "Settings", imageName: "settings"),
+                        Setting(name: "Terms & privacy policy", imageName: "lock"),
+                        Setting(name: "Send Feedback", imageName: "feedback"),
+                        Setting(name: "Help", imageName: "help"),
+                        Setting(name: "Switch Account", imageName: "account"),
+                        Setting(name: "Cancel", imageName: "close")]
+        
+        return settings
+    }()
+    
     //MARK: - storyboard
     let cellId = "cellId"
     
@@ -64,25 +73,30 @@ class SettingsLauncher: NSObject {
 
 extension SettingsLauncher: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
+        return settings.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? SettingsCell else {
             return UICollectionViewCell()
         }
-        
-        //MARK: - that should be done in another way
-        cell.icon.image = UIImage(named: settingsImages[indexPath.item])?.withRenderingMode(.alwaysTemplate)
-        cell.nameLabel.text = settingsNames[indexPath.item]
+
+        let setting = settings[indexPath.item]
+        cell.setting = setting
         
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("luul")
+    }
+    
+    //MARK: - Sizing
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 50)
     }
     
+    //MARK: - this is to minimize gap between cells
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
