@@ -20,7 +20,7 @@ class SettingsCell: BaseCell {
     
     var setting: Setting? {
         didSet {
-            nameLabel.text = setting?.name
+            nameLabel.text = setting?.name.rawValue
             icon.image = UIImage(named: setting?.imageName ?? "")
         }
     }

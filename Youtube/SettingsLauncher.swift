@@ -20,12 +20,12 @@ class SettingsLauncher: NSObject {
     
     let collectionViewHeight: CGFloat = 300.0
     let settings: [Setting] = {
-        let settings = [Setting(name: "Settings", imageName: "settings"),
-                        Setting(name: "Terms & privacy policy", imageName: "lock"),
-                        Setting(name: "Send Feedback", imageName: "feedback"),
-                        Setting(name: "Help", imageName: "help"),
-                        Setting(name: "Switch Account", imageName: "account"),
-                        Setting(name: "Cancel", imageName: "close")]
+        let settings = [Setting(name: .settings, imageName: "settings"),
+                        Setting(name: .terms, imageName: "lock"),
+                        Setting(name: .feedback, imageName: "feedback"),
+                        Setting(name: .help, imageName: "help"),
+                        Setting(name: .account, imageName: "account"),
+                        Setting(name: .cancel, imageName: "close")]
         
         return settings
     }()
@@ -98,7 +98,7 @@ extension SettingsLauncher: UICollectionViewDelegate, UICollectionViewDataSource
         }) { (completed) in
             let setting = self.settings[indexPath.item]
             
-            if setting.name == "Cancel" {
+            if setting.name == .cancel {
                 return
             }
             
