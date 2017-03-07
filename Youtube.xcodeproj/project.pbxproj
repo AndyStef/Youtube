@@ -23,6 +23,7 @@
 		8FFDCB241E6DA50E0069D502 /* SettingsLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFDCB231E6DA50E0069D502 /* SettingsLauncher.swift */; };
 		8FFDCB261E6DB0370069D502 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFDCB251E6DB0370069D502 /* SettingsCell.swift */; };
 		8FFE7DE01E6EA371008CD018 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFE7DDF1E6EA371008CD018 /* Setting.swift */; };
+		8FFE7DE31E6EC97B008CD018 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFE7DE21E6EC97B008CD018 /* ApiService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		8FFDCB231E6DA50E0069D502 /* SettingsLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsLauncher.swift; sourceTree = "<group>"; };
 		8FFDCB251E6DB0370069D502 /* SettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		8FFE7DDF1E6EA371008CD018 /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
+		8FFE7DE21E6EC97B008CD018 /* ApiService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				8F04F8371E5660DA0033FEAE /* Controller */,
 				8F04F8361E5660D70033FEAE /* View */,
 				8F04F8351E5660D00033FEAE /* Model */,
+				8FFE7DE11E6EC956008CD018 /* ApiService */,
 				8F455E601E64547600C6CDAB /* Extensions */,
 				8F04F8341E5660C50033FEAE /* Supporting files */,
 			);
@@ -135,6 +138,14 @@
 				8FFDCB211E6D96DD0069D502 /* UIImageView.swift */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		8FFE7DE11E6EC956008CD018 /* ApiService */ = {
+			isa = PBXGroup;
+			children = (
+				8FFE7DE21E6EC97B008CD018 /* ApiService.swift */,
+			);
+			name = ApiService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,6 +233,7 @@
 				8FFDCB221E6D96DD0069D502 /* UIImageView.swift in Sources */,
 				8F04F8391E56662B0033FEAE /* HomeViewController.swift in Sources */,
 				8F64089C1E687BCD0072B519 /* Channel.swift in Sources */,
+				8FFE7DE31E6EC97B008CD018 /* ApiService.swift in Sources */,
 				8F455E641E6463BA00C6CDAB /* MenuBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

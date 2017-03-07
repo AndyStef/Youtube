@@ -146,49 +146,9 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     //MARK: - networking - it should definitely be in separate class
     private func fetchVideos() {
-        let urlString = "https://s3-us-west-2.amazonaws.com/youtubeassets/home.json"
-        guard let url = URL(string: urlString) else { return }
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: url) { (data, response, error) in
-            if let error = error {
-                print("Error:", error.localizedDescription)
-            }
-            
-            guard let data = data else {
-                print("Error: cannot get data")
-                return
-            }
-           
-            do {
-                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-                
-                self.videos = [Video]()
-                
-                for dictionary in json as! [[String: Any]] {
-                    let video = Video()
-                    video.title = dictionary["title"] as? String
-                    video.thumbnailImageName = dictionary["thumbnail_image_name"] as? String
-                    
-                    let channelDictionary = dictionary["channel"] as? [String: Any]
-                    let channel = Channel()
-                    channel.name = channelDictionary?["name"] as? String
-                    channel.profileImageName = channelDictionary?["profile_image_name"] as? String
-                    
-                    video.channel = channel
-                    self.videos?.append(video)
-                }
-                
-                //MARK: - what is better this or to do in didSet
-                DispatchQueue.main.async {
-                    self.collectionView?.reloadData()
-                }
-                
-            } catch let jsonError {
-                print("Error parsing json", jsonError.localizedDescription)
-                return
-            }
+        ApiService.sharedInstance.fetchVideos { (videos) in
+            self.videos = videos
+            self.collectionView?.reloadData()
         }
-        
-        dataTask.resume()
     }
 }
