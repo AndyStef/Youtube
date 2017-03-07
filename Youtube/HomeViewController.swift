@@ -17,12 +17,14 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
 
     private struct CellId {
         static let homeCellId = "HomeCellId"
+        static let tabCellId = "TabCellId"
     }
 
-    let menuBar: MenuBar = {
+    lazy var menuBar: MenuBar = {
         let bar = MenuBar()
         bar.translatesAutoresizingMaskIntoConstraints = false
-
+        bar.homeController = self
+        
         return bar
     }()
     
@@ -50,7 +52,9 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         collectionView?.backgroundColor = .white
         collectionView?.contentInset = UIEdgeInsets(top: 50.0, left: 0, bottom: 0, right: 0)
         collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 50.0, left: 0, bottom: 0, right: 0)
+        collectionView?.isPagingEnabled = true
         collectionView?.register(VideoCollectionViewCell.self, forCellWithReuseIdentifier: CellId.homeCellId)
+        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: CellId.tabCellId)
     }
     
     private func setupNavBarButtons() {
@@ -67,6 +71,11 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     @objc private func handleSearchTap() {
         //TODO: implement this
+    }
+    
+    func scrollTo(menuIndex: Int) {
+        let indexPath = IndexPath(item: menuIndex, section: 0)
+        collectionView?.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition(rawValue: 0), animated: true)
     }
     
     //MARK: - maybe there is no need for delegate
@@ -114,35 +123,61 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     //MARK: - Collection View stuff
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return videos?.count ?? 0
+        return 4
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellId.homeCellId, for: indexPath) as? VideoCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-
-        cell.video = videos?[indexPath.item]
-
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellId.tabCellId, for: indexPath)
+        cell.backgroundColor = .blue
+        
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        //What is better here bounds or frame????? brian put frame here
-        let width = view.bounds.width
-        let basicHeightForImage = (width - 32) * 9 / 16
-        //MARK: - Basically these magic numbers is not that i want
-        //FIXME: - fix too long label name(video 4)
-        //FIXME: - it's totally broken on other iPhones
-        let finalHeight = basicHeightForImage + 8 + 8 + 19 + 29 + 22
-
-        return CGSize(width: width, height: finalHeight)
+        return CGSize(width: view.frame.width, height: view.frame.height)
     }
-
-    //MARK: Not sure if this is neccessary
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+    
+    //MARK: - ScrollView things
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        menuBar.horizontalBarLeftAnchor?.constant = scrollView.contentOffset.x / 4
     }
+    
+    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let index = targetContentOffset.pointee.x / view.frame.width
+        let indexPath = IndexPath(item: Int(index), section: 0)
+        menuBar.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: UICollectionViewScrollPosition(rawValue: 0))
+    }
+    
+//    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return videos?.count ?? 0
+//    }
+//
+//    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellId.homeCellId, for: indexPath) as? VideoCollectionViewCell else {
+//            return UICollectionViewCell()
+//        }
+//
+//        cell.video = videos?[indexPath.item]
+//
+//        return cell
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        //What is better here bounds or frame????? brian put frame here
+//        let width = view.bounds.width
+//        let basicHeightForImage = (width - 32) * 9 / 16
+//        //MARK: - Basically these magic numbers is not that i want
+//        //FIXME: - fix too long label name(video 4)
+//        //FIXME: - it's totally broken on other iPhones
+//        let finalHeight = basicHeightForImage + 8 + 8 + 19 + 29 + 22
+//
+//        return CGSize(width: width, height: finalHeight)
+//    }
+//
+//    //MARK: Not sure if this is neccessary
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        return 0
+//    }
     
     //MARK: - networking - it should definitely be in separate class
     private func fetchVideos() {

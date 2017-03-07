@@ -10,7 +10,7 @@ import UIKit
 
 class MenuBar: UIView {
 
-    fileprivate lazy var collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -22,9 +22,11 @@ class MenuBar: UIView {
         return collectionView
     }()
 
+    var homeController: HomeViewController?
+    
     fileprivate let cellId = "cellId"
     fileprivate let imageNames = ["home", "fire", "collection", "user"]
-    fileprivate var horizontalBarLeftAnchor: NSLayoutConstraint?
+    var horizontalBarLeftAnchor: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -87,12 +89,7 @@ extension MenuBar: UICollectionViewDataSource, UICollectionViewDelegate, UIColle
     
     //MARK: - delegate methods 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let x = CGFloat(indexPath.item) * frame.width/4
-        horizontalBarLeftAnchor?.constant = x
-        
-        UIView.animate(withDuration: 0.4) {
-            self.layoutIfNeeded()
-        }
+        homeController?.scrollTo(menuIndex: indexPath.item)
     }
 
     //MARK: sizing methods

@@ -19,7 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
 
-        let controller = HomeViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        //MARK: - this can be done with same func
+        layout.minimumLineSpacing = 0
+        let controller = HomeViewController(collectionViewLayout: layout)
         window?.rootViewController = UINavigationController(rootViewController: controller)
 
         //Navigation bar customization
