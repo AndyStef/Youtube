@@ -24,12 +24,14 @@ class MenuBar: UIView {
 
     fileprivate let cellId = "cellId"
     fileprivate let imageNames = ["home", "fire", "collection", "user"]
-
+    fileprivate var horizontalBarLeftAnchor: NSLayoutConstraint?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         setupCollectionView()
         selectFirstCell()
+        setupHorizontalBar()
     }
 
     private func setupCollectionView() {
@@ -44,6 +46,19 @@ class MenuBar: UIView {
     private func selectFirstCell() {
         let selectedIndexPath = IndexPath(item: 0, section: 0)
         collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .top)
+    }
+    
+    private func setupHorizontalBar() {
+        let horizontalBarView = UIView()
+        horizontalBarView.backgroundColor = .white
+        horizontalBarView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(horizontalBarView)
+        
+        horizontalBarLeftAnchor = horizontalBarView.leftAnchor.constraint(equalTo: leftAnchor)
+        horizontalBarLeftAnchor?.isActive = true
+        horizontalBarView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        horizontalBarView.heightAnchor.constraint(equalToConstant: 8.0).isActive = true
+        horizontalBarView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/4).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -68,6 +83,16 @@ extension MenuBar: UICollectionViewDataSource, UICollectionViewDelegate, UIColle
         cell.imageView.image = UIImage(named: imageNames[indexPath.item])?.withRenderingMode(.alwaysTemplate)
 
         return cell
+    }
+    
+    //MARK: - delegate methods 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let x = CGFloat(indexPath.item) * frame.width/4
+        horizontalBarLeftAnchor?.constant = x
+        
+        UIView.animate(withDuration: 0.4) {
+            self.layoutIfNeeded()
+        }
     }
 
     //MARK: sizing methods
